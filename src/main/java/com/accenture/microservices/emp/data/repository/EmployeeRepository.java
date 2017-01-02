@@ -16,6 +16,6 @@ import com.accenture.microservices.emp.data.EmployeeAttendance;
  */
 public interface EmployeeRepository extends CrudRepository<EmployeeAttendance, String>{
 	
-	@View(designDocument = "byEmployeeId_design", viewName = "byEmployeeId")
+	@View(designDocument = "byEmployeeId", viewName = "byEmployeeId")
 	 List<EmployeeAttendance> findByEmployeeId(Integer employeeId);
 }
