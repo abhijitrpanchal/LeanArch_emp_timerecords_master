@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 @EnableAutoConfiguration
 @SpringBootApplication(scanBasePackages = { "com.accenture.microservices.emp" })
+@EnableCircuitBreaker
+@EnableDiscoveryClient
+@EnableFeignClients
 //@SpringBootApplication(scanBasePackages = { "com.accenture.microservices.emp.data"})
 public class EmpAttendanceMasterApplication {
 	

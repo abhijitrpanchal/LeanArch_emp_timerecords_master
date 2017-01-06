@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.microservices.emp.business.AttendanceCalculator;
 import com.accenture.microservices.emp.data.EmployeeAttendance;
+import com.accenture.microservices.emp.timerecords.service.TimeRecordsService;
+import com.accenture.microservices.emp.timerecords.web.clients.ChargeCodeService;
+import com.accenture.microservices.emp.timerecords.web.clients.vo.ChargeCode;
+import com.accenture.microservices.emp.timerecords.web.clients.vo.EmployeeAssignments;
 
 
 /**
@@ -44,6 +48,9 @@ public class AttendanceController {
 	
 	@Autowired
 	DataOperationsController dataOperationController;
+	
+	@Autowired
+	TimeRecordsService timeRecordsService;
 	
 	@RequestMapping(value = "/timerecords/{empId}", method=RequestMethod.GET)
 	public Collection<EmployeeAttendance> getEmployeeAttendance(@PathVariable("empId") Integer id){
@@ -85,6 +92,40 @@ public class AttendanceController {
 		log.info("request received: "+employeeAttendance2.toString());
 		this.attendanceCalculator.deleteEmployeeAttandance(employeeAttendance2);
 		return null;
+	}
+	
+	@RequestMapping(value = "/timerecords/chargecodes/{wbs}", method = RequestMethod.GET)
+	public ChargeCode getChargeCodeDetails(@PathVariable("wbs") String wbs){
+		
+		log.info("request received: "+"/timerecords/chargecodes/"+wbs);
+		ChargeCode chargeCode=timeRecordsService.getChargeCodeDetails(wbs);
+		
+		return	chargeCode;
+	}
+	
+	@RequestMapping(value = "/timerecords/chargecodes/{wbs}/employees/{empid}", method = RequestMethod.GET)
+	public ChargeCode getChargeCodeDetailsOfAnEmployee(@PathVariable("wbs") String wbs,@PathVariable("empid") Integer empid){
+		
+		log.info("request received: "+"/timerecords/chargecodes/"+wbs+"/employees/"+empid);		
+		ChargeCode chargeCode=timeRecordsService.getChargeCodeDetailsOfAnEmployee(wbs, empid);
+		
+		return	chargeCode;
+	}
+	
+	@RequestMapping(value = "/timerecords/employees/assignments/{empId}", method=RequestMethod.GET)
+	public EmployeeAssignments getEmployeeAssignment(@PathVariable("empId") Integer empId){
+		
+		log.info("request received: "+"/timerecords/employees/assignments/"+empId);
+		
+		EmployeeAssignments employeeAssignments=null;
+		try{
+			employeeAssignments=timeRecordsService.getEmployeeAssignment(empId);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return employeeAssignments;
+		
 	}
 
 }

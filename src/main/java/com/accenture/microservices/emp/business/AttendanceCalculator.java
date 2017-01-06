@@ -3,6 +3,7 @@
  */
 package com.accenture.microservices.emp.business;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.accenture.microservices.emp.data.AttendanceAggregator;
 import com.accenture.microservices.emp.data.EmployeeAttendance;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 
 /**
@@ -35,15 +37,27 @@ public class AttendanceCalculator {
 	@Autowired
 	AttendanceAggregator attendanceAggregator;
 
-	
+	@HystrixCommand(fallbackMethod="handleGetCalculateAttendanceEmployee")
 	public Collection<EmployeeAttendance> getCalculateAttendanceEmployee(Integer empId){
 		Collection<EmployeeAttendance>  employeeAttenance = this.attendanceAggregator.getEmployeeAttendance(empId);
 		return  employeeAttenance;
 	}
 	
+	public Collection<EmployeeAttendance> handleGetCalculateAttendanceEmployee(Integer empId){
+
+		return  Arrays.asList(new EmployeeAttendance());
+	}
+	
+	@HystrixCommand(fallbackMethod="handleGetCalculateAttendanceEmployees")
 	public Collection<EmployeeAttendance> getCalculateAttendanceEmployees(){
 		Collection<EmployeeAttendance>  employeesAttenance = this.attendanceAggregator.getAllEmployeesAttendance();
 		return  employeesAttenance;
+	}
+	
+
+	public Collection<EmployeeAttendance> handleGetCalculateAttendanceEmployees(){
+		
+		return  Arrays.asList(new EmployeeAttendance());
 	}
 	public Boolean submitEmployeeAttendanceWeb(EmployeeAttendance employeeAttendance){
 		Boolean status = this.attendanceAggregator.submitEmployeeAttenanceDomain(employeeAttendance);
