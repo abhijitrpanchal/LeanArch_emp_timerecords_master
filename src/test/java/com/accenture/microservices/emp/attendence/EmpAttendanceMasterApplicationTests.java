@@ -26,15 +26,17 @@ import org.springframework.web.context.WebApplicationContext;
 import com.accenture.microservices.emp.timerecords.EmpAttendanceMasterApplication;
 
 //@RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = EmpAttendanceMasterApplication.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = EmpAttendanceMasterApplication.class)
 @WebAppConfiguration
 public class EmpAttendanceMasterApplicationTests {
+	
 	public static final Logger log = LoggerFactory.getLogger(EmpAttendanceMasterApplicationTests.class);
+	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
+	
 	private MockMvc mockMvc;
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
     @Autowired
