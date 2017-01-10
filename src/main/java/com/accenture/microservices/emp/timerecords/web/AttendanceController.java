@@ -3,6 +3,7 @@ package com.accenture.microservices.emp.timerecords.web;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accenture.microservices.emp.business.AttendanceCalculator;
 import com.accenture.microservices.emp.data.EmployeeAttendance;
+import com.accenture.microservices.emp.timerecords.client.ChargeCodeService;
+import com.accenture.microservices.emp.timerecords.client.vo.ChargeCode;
+import com.accenture.microservices.emp.timerecords.client.vo.EmployeeAssignments;
+import com.accenture.microservices.emp.timerecords.client.vo.EmployeeDetails;
 import com.accenture.microservices.emp.timerecords.service.TimeRecordsService;
-import com.accenture.microservices.emp.timerecords.web.clients.ChargeCodeService;
-import com.accenture.microservices.emp.timerecords.web.clients.vo.ChargeCode;
-import com.accenture.microservices.emp.timerecords.web.clients.vo.EmployeeAssignments;
 
 
 /**
@@ -125,6 +127,41 @@ public class AttendanceController {
 		}
 		
 		return employeeAssignments;
+		
+	}
+	
+	
+	@RequestMapping(value = "/timerecords/employees/{empId}", method=RequestMethod.GET)
+	public EmployeeDetails getEmployeeDetail(@PathVariable("empId") Integer empId){
+		
+		log.info("request received: "+"/timerecords/employees/{empId}"+empId);
+		
+		EmployeeDetails employeeDetail=null;
+		try{
+			employeeDetail=timeRecordsService.getEmployeeDetails(empId);
+		}catch(Exception e){
+			log.info("Error in get getEmployeeDetail " +e);
+		}
+		
+		return employeeDetail;
+		
+	}
+	
+	@RequestMapping(value = "/timerecords/employees", method=RequestMethod.GET)
+	public  List<EmployeeDetails> getAllEmployees(){
+		
+		log.info("request received: "+"/timerecords/employees");
+		
+		List<EmployeeDetails> EmployeeDetailsList=null;
+		try{
+			
+			EmployeeDetailsList=timeRecordsService.getAllEmployees();
+			
+		}catch(Exception e){
+			log.info("Error in get getAllEmployees " +e);
+		}
+		
+		return EmployeeDetailsList;
 		
 	}
 

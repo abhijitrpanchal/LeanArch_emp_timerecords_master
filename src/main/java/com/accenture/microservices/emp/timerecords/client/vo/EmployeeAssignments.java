@@ -1,4 +1,4 @@
-package com.accenture.microservices.emp.timerecords.web.clients.vo;
+package com.accenture.microservices.emp.timerecords.client.vo;
 
 import java.util.Collection;
 import java.util.Iterator;

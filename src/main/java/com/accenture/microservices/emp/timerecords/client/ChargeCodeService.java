@@ -1,11 +1,11 @@
-package com.accenture.microservices.emp.timerecords.web.clients;
+package com.accenture.microservices.emp.timerecords.client;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.accenture.microservices.emp.timerecords.web.clients.vo.ChargeCode;
+import com.accenture.microservices.emp.timerecords.client.vo.ChargeCode;
 
 @FeignClient(name = "chargecodes")
 public interface ChargeCodeService {

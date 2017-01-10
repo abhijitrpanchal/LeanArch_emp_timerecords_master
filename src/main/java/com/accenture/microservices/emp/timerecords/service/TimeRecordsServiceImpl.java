@@ -2,6 +2,8 @@ package com.accenture.microservices.emp.timerecords.service;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.accenture.microservices.emp.timerecords.web.clients.AssignmentsService;
-import com.accenture.microservices.emp.timerecords.web.clients.ChargeCodeService;
-import com.accenture.microservices.emp.timerecords.web.clients.vo.ChargeCode;
-import com.accenture.microservices.emp.timerecords.web.clients.vo.EmployeeAssignments;
+import com.accenture.microservices.emp.timerecords.client.AssignmentsService;
+import com.accenture.microservices.emp.timerecords.client.ChargeCodeService;
+import com.accenture.microservices.emp.timerecords.client.EmployeeDetailsService;
+import com.accenture.microservices.emp.timerecords.client.vo.ChargeCode;
+import com.accenture.microservices.emp.timerecords.client.vo.EmployeeAssignments;
+import com.accenture.microservices.emp.timerecords.client.vo.EmployeeDetails;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @Component
@@ -25,6 +29,9 @@ public class TimeRecordsServiceImpl implements TimeRecordsService {
 	
 	@Autowired
 	private AssignmentsService assignmentsService;
+	
+	@Autowired
+	private EmployeeDetailsService employeeDetailsService;
 
 	@Override
 	@HystrixCommand(fallbackMethod="handleGetChargeCodeDetails")
@@ -105,6 +112,55 @@ public class TimeRecordsServiceImpl implements TimeRecordsService {
 		}else {
 			return null;
 		}
+		
+	}
+	
+	@Override
+	@HystrixCommand(fallbackMethod="handleGetEmployeeDetails")
+	public EmployeeDetails getEmployeeDetails(long id){
+		
+		EmployeeDetails employeeDetails=employeeDetailsService.getEmployeeDetails(id);
+		
+		return employeeDetails;
+		
+	}
+	
+	/*
+	 *  hystrix circuitbreaker fallbackMethod for getEmployeeDetails
+	 */
+	
+	public EmployeeDetails handleGetEmployeeDetails(long id,Throwable t){
+		
+		log.info("fallback method  handleGetEmployeeDetails called,the error thrown is: "+getErrorStackTrace(t));
+		
+		EmployeeDetails employeeDetails=new EmployeeDetails();
+		
+		return employeeDetails;
+		
+	}
+	
+	
+	@Override
+	@HystrixCommand(fallbackMethod="handleGetAllEmployees")
+	public List<EmployeeDetails> getAllEmployees(){
+		
+		 List<EmployeeDetails> employeeDetailsList =employeeDetailsService.getAllEmployees();
+		
+		return employeeDetailsList;
+		
+	}
+	
+	/*
+	 *  hystrix circuitbreaker fallbackMethod for getEmployeeDetails
+	 */
+	
+	public List<EmployeeDetails> handleGetAllEmployees(Throwable t){
+		
+		log.info("fallback method  handleGetAllEmployees called,the error thrown is: "+getErrorStackTrace(t));
+		
+		EmployeeDetails employeeDetails=new EmployeeDetails();
+		
+		return Arrays.asList(employeeDetails);
 		
 	}
 
