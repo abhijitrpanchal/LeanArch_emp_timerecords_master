@@ -26,6 +26,8 @@ import com.accenture.microservices.emp.timerecords.client.vo.EmployeeAssignments
 import com.accenture.microservices.emp.timerecords.client.vo.EmployeeDetails;
 import com.accenture.microservices.emp.timerecords.service.TimeRecordsService;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 
 /**
  * @author j.venugopalan
@@ -36,6 +38,7 @@ import com.accenture.microservices.emp.timerecords.service.TimeRecordsService;
 @RestController
 @Component
 @Service
+@EnableSwagger2
 public class AttendanceController {
 	
 	private static final Logger log = LoggerFactory.getLogger(AttendanceController.class);
